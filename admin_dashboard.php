@@ -1,31 +1,44 @@
 <?php
-include 'connector.php';
-session_start();
-if (!isset($_SESSION['username']) || $_SESSION['role'] != 'admin') {
-    header("Location: login.php");
-    exit();
-}
+require_once 'includes/admin_guard.php';
+
+$activePage = 'dashboard';
+$pageTitle = 'Tableau de bord';
+
+$stats = [
+    'users' => (int) $idcon->query("SELECT COUNT(*) FROM utilisateurs")->fetchColumn(),
+    'adherents' => (int) $idcon->query("SELECT COUNT(*) FROM Adherent")->fetchColumn(),
+    'moniteurs' => (int) $idcon->query("SELECT COUNT(*) FROM Moniteur")->fetchColumn(),
+    'seances' => (int) $idcon->query("SELECT COUNT(*) FROM Seance")->fetchColumn(),
+];
+
+require_once 'includes/admin_header.php';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord Administrateur</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-    <h1>Espace Administrateur</h1>
-    <p>Bonjour, <?php echo $_SESSION['username']; ?> (Admin)!</p>
-    <nav>
-        <a href="manage_users.php">Gérer les Utilisateurs</a> |
-        <a href="manage_adherents.php">Gérer les Adhérents</a> |
-        <a href="manage_moniteurs.php">Gérer les Moniteurs</a> |
-        <a href="manage_seances.php">Gérer les Séances</a> |
-        <a href="logout.php">Se déconnecter</a>
-    </nav>
-    <!-- Dashboard avec statistiques, etc. -->
+<section class="grid grid-4">
+    <article class="stat-card">
+        <p>Utilisateurs</p>
+        <strong><?php echo $stats['users']; ?></strong>
+    </article>
+    <article class="stat-card">
+        <p>Adherents</p>
+        <strong><?php echo $stats['adherents']; ?></strong>
+    </article>
+    <article class="stat-card">
+        <p>Moniteurs</p>
+        <strong><?php echo $stats['moniteurs']; ?></strong>
+    </article>
+    <article class="stat-card">
+        <p>Seances</p>
+        <strong><?php echo $stats['seances']; ?></strong>
+    </article>
+</section>
+
+<section class="card dashboard-actions">
+    <h2>Actions rapides</h2>
+    <div class="inline-actions">
+        <a class="button" href="add_user.php">Ajouter un utilisateur</a>
+        <a class="button" href="add_adherent.php">Ajouter un adherent</a>
+        <a class="button" href="add_moniteur.php">Ajouter un moniteur</a>
+        <a class="button" href="add_seance.php">Ajouter une seance</a>
     </div>
-</body>
-</html>
+</section>
+<?php require_once 'includes/admin_footer.php'; ?>
