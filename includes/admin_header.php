@@ -8,7 +8,7 @@ $activePage = $activePage ?? "";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($pageTitle); ?></title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <div class="admin-shell">
@@ -16,12 +16,12 @@ $activePage = $activePage ?? "";
             <h2 class="brand-title">AutoEcoleManager</h2>
             <p class="brand-subtitle">Espace administrateur</p>
             <nav class="side-nav">
-                <a class="<?php echo $activePage === 'dashboard' ? 'active' : ''; ?>" href="admin_dashboard.php">Dashboard</a>
-                <a class="<?php echo $activePage === 'users' ? 'active' : ''; ?>" href="manage_users.php">Utilisateurs</a>
-                <a class="<?php echo $activePage === 'adherents' ? 'active' : ''; ?>" href="manage_adherents.php">Adherents</a>
-                <a class="<?php echo $activePage === 'moniteurs' ? 'active' : ''; ?>" href="manage_moniteurs.php">Moniteurs</a>
-                <a class="<?php echo $activePage === 'seances' ? 'active' : ''; ?>" href="manage_seances.php">Seances</a>
-                <a href="logout.php">Se deconnecter</a>
+                <a class="<?php echo $activePage === 'dashboard' ? 'active' : ''; ?>" href="/admin/dashboard.php">Dashboard</a>
+                <a class="<?php echo $activePage === 'users' ? 'active' : ''; ?>" href="/admin/manage_users.php">Utilisateurs</a>
+                <a class="<?php echo $activePage === 'adherents' ? 'active' : ''; ?>" href="/admin/manage_adherents.php">Adherents</a>
+                <a class="<?php echo $activePage === 'moniteurs' ? 'active' : ''; ?>" href="/admin/manage_moniteurs.php">Moniteurs</a>
+                <a class="<?php echo $activePage === 'seances' ? 'active' : ''; ?>" href="/admin/manage_seances.php">Seances</a>
+                <a href="/logout.php">Se deconnecter</a>
             </nav>
         </aside>
         <main class="admin-main">
