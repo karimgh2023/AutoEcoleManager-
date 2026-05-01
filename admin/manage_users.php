@@ -24,7 +24,7 @@ require_once __DIR__ . '/../includes/admin_header.php';
 <section class="card">
     <div class="section-head">
         <h2>Filtres</h2>
-        <a href="/add_user.php">Ajouter un utilisateur</a>
+        <a href="/admin/actions/add_user.php">Ajouter un utilisateur</a>
     </div>
     <form method="GET" class="grid grid-3">
         <div>
@@ -65,8 +65,8 @@ require_once __DIR__ . '/../includes/admin_header.php';
                 <td><?php echo $user['adherent_id'] ? $user['adherent_id'] : '-'; ?></td>
                 <td><?php echo $user['adherent_nom'] ? htmlspecialchars($user['adherent_nom'] . ' ' . $user['adherent_prenom']) : '-'; ?></td>
                 <td>
-                    <a href="/edit_user.php?id=<?php echo $user['id']; ?>">Modifier</a> |
-                    <a href="/delete_user.php?id=<?php echo $user['id']; ?>" onclick="return confirm('Etes-vous sur ?')">Supprimer</a>
+                    <a href="/admin/actions/edit_user.php?id=<?php echo $user['id']; ?>">Modifier</a> |
+                    <a href="/admin/actions/delete_user.php?id=<?php echo $user['id']; ?>" onclick="return confirm('Etes-vous sur ?')">Supprimer</a>
                 </td>
             </tr>
             <?php endforeach; ?>

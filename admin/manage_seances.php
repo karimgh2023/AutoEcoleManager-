@@ -36,7 +36,7 @@ require_once __DIR__ . '/../includes/admin_header.php';
 <section class="card">
     <div class="section-head">
         <h2>Filtres</h2>
-        <a href="/add_seance.php">Ajouter une seance</a>
+        <a href="/admin/actions/add_seance.php">Ajouter une seance</a>
     </div>
     <form method="GET" class="grid grid-3">
         <div>
@@ -87,8 +87,8 @@ require_once __DIR__ . '/../includes/admin_header.php';
                 <td><?php echo htmlspecialchars($seance['HeureS']); ?></td>
                 <td><?php echo (int) $seance['NbHeures']; ?></td>
                 <td>
-                    <a href="/edit_seance.php?idm=<?php echo $seance['IdM']; ?>&ida=<?php echo $seance['IdA']; ?>&date=<?php echo $seance['DateS']; ?>">Modifier</a> |
-                    <a href="/delete_seance.php?idm=<?php echo $seance['IdM']; ?>&ida=<?php echo $seance['IdA']; ?>&date=<?php echo $seance['DateS']; ?>" onclick="return confirm('Etes-vous sur ?')">Supprimer</a>
+                    <a href="/admin/actions/edit_seance.php?idm=<?php echo $seance['IdM']; ?>&ida=<?php echo $seance['IdA']; ?>&date=<?php echo $seance['DateS']; ?>">Modifier</a> |
+                    <a href="/admin/actions/delete_seance.php?idm=<?php echo $seance['IdM']; ?>&ida=<?php echo $seance['IdA']; ?>&date=<?php echo $seance['DateS']; ?>" onclick="return confirm('Etes-vous sur ?')">Supprimer</a>
                 </td>
             </tr>
             <?php endforeach; ?>

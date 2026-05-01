@@ -28,7 +28,7 @@ require_once __DIR__ . '/../includes/admin_header.php';
 <section class="card">
     <div class="section-head">
         <h2>Filtres</h2>
-        <a href="/add_adherent.php">Ajouter un adherent</a>
+        <a href="/admin/actions/add_adherent.php">Ajouter un adherent</a>
     </div>
     <form method="GET" class="grid grid-3">
         <div>
@@ -67,8 +67,8 @@ require_once __DIR__ . '/../includes/admin_header.php';
                 <td><?php echo htmlspecialchars($adherent['PrenomA']); ?></td>
                 <td><?php echo htmlspecialchars($adherent['Ville']); ?></td>
                 <td>
-                    <a href="/edit_adherent.php?id=<?php echo $adherent['IdA']; ?>">Modifier</a> |
-                    <a href="/delete_adherent.php?id=<?php echo $adherent['IdA']; ?>" onclick="return confirm('Etes-vous sur ?')">Supprimer</a>
+                    <a href="/admin/actions/edit_adherent.php?id=<?php echo $adherent['IdA']; ?>">Modifier</a> |
+                    <a href="/admin/actions/delete_adherent.php?id=<?php echo $adherent['IdA']; ?>" onclick="return confirm('Etes-vous sur ?')">Supprimer</a>
                 </td>
             </tr>
             <?php endforeach; ?>

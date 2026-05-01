@@ -24,7 +24,7 @@ require_once __DIR__ . '/../includes/admin_header.php';
 <section class="card">
     <div class="section-head">
         <h2>Filtres</h2>
-        <a href="/add_moniteur.php">Ajouter un moniteur</a>
+        <a href="/admin/actions/add_moniteur.php">Ajouter un moniteur</a>
     </div>
     <form method="GET" class="grid grid-3">
         <div>
@@ -57,8 +57,8 @@ require_once __DIR__ . '/../includes/admin_header.php';
                 <td><?php echo htmlspecialchars($moniteur['NomM']); ?></td>
                 <td><?php echo htmlspecialchars($moniteur['PrenomM']); ?></td>
                 <td>
-                    <a href="/edit_moniteur.php?id=<?php echo $moniteur['IdM']; ?>">Modifier</a> |
-                    <a href="/delete_moniteur.php?id=<?php echo $moniteur['IdM']; ?>" onclick="return confirm('Etes-vous sur ?')">Supprimer</a>
+                    <a href="/admin/actions/edit_moniteur.php?id=<?php echo $moniteur['IdM']; ?>">Modifier</a> |
+                    <a href="/admin/actions/delete_moniteur.php?id=<?php echo $moniteur['IdM']; ?>" onclick="return confirm('Etes-vous sur ?')">Supprimer</a>
                 </td>
             </tr>
             <?php endforeach; ?>

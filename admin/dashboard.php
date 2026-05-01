@@ -35,10 +35,10 @@ require_once __DIR__ . '/../includes/admin_header.php';
 <section class="card dashboard-actions">
     <h2>Actions rapides</h2>
     <div class="inline-actions">
-        <a class="button" href="/add_user.php">Ajouter un utilisateur</a>
-        <a class="button" href="/add_adherent.php">Ajouter un adherent</a>
-        <a class="button" href="/add_moniteur.php">Ajouter un moniteur</a>
-        <a class="button" href="/add_seance.php">Ajouter une seance</a>
+        <a class="button" href="/admin/actions/add_user.php">Ajouter un utilisateur</a>
+        <a class="button" href="/admin/actions/add_adherent.php">Ajouter un adherent</a>
+        <a class="button" href="/admin/actions/add_moniteur.php">Ajouter un moniteur</a>
+        <a class="button" href="/admin/actions/add_seance.php">Ajouter une seance</a>
     </div>
 </section>
 <?php require_once __DIR__ . '/../includes/admin_footer.php'; ?>
