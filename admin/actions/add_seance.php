@@ -19,12 +19,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($idm <= 0 || $ida <= 0 || $date === '' || $heure === '' || $nbheures <= 0) {
         $error = "Tous les champs sont obligatoires.";
     } else {
-        $stmt = $idcon->prepare("INSERT INTO Seance (IdM, IdA, DateS, HeureS, NbHeures) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$idm, $ida, $date, $heure, $nbheures]);
-        header("Location: /admin/manage_seances.php");
-        exit();
+        try {
+            $stmt = $idcon->prepare("INSERT INTO Seance (IdM, IdA, DateS, HeureS, NbHeures) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$idm, $ida, $date, $heure, $nbheures]);
+            set_flash('success', "Seance creee avec succes.");
+            header("Location: /admin/manage_seances.php");
+            exit();
+        } catch (PDOException $e) {
+            $error = "Impossible de creer la seance.";
+        }
     }
 }
+
+$seanceFormData = [
+    'idm' => (string) ($_POST['idm'] ?? ($moniteurs[0]['IdM'] ?? '')),
+    'ida' => (string) ($_POST['ida'] ?? ($adherents[0]['IdA'] ?? '')),
+    'date' => (string) ($_POST['date'] ?? ''),
+    'heure' => (string) ($_POST['heure'] ?? ''),
+    'nbheures' => (int) ($_POST['nbheures'] ?? 1),
+];
+$submitLabel = 'Ajouter';
 
 $activePage = 'seances';
 $pageTitle = 'Ajouter une seance';
@@ -33,26 +47,6 @@ require_once __DIR__ . '/../../includes/admin_header.php';
 <section class="card">
     <h2>Nouvelle seance</h2>
     <?php if ($error): ?><div class="error"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
-    <form method="post" class="grid">
-        <div>
-            <label for="idm">Moniteur</label>
-            <select id="idm" name="idm" required>
-                <?php foreach ($moniteurs as $m): ?><option value="<?php echo $m['IdM']; ?>"><?php echo htmlspecialchars($m['NomM'] . ' ' . $m['PrenomM']); ?></option><?php endforeach; ?>
-            </select>
-        </div>
-        <div>
-            <label for="ida">Adherent</label>
-            <select id="ida" name="ida" required>
-                <?php foreach ($adherents as $a): ?><option value="<?php echo $a['IdA']; ?>"><?php echo htmlspecialchars($a['NomA'] . ' ' . $a['PrenomA']); ?></option><?php endforeach; ?>
-            </select>
-        </div>
-        <div><label for="date">Date</label><input type="date" id="date" name="date" required></div>
-        <div><label for="heure">Heure</label><input type="time" id="heure" name="heure" required></div>
-        <div><label for="nbheures">Nombre d'heures</label><input type="number" id="nbheures" name="nbheures" min="1" required></div>
-        <div class="inline-actions">
-            <input type="submit" value="Ajouter">
-            <a href="/admin/manage_seances.php">Retour</a>
-        </div>
-    </form>
+    <?php require __DIR__ . '/partials/seance_form.php'; ?>
 </section>
 <?php require_once __DIR__ . '/../../includes/admin_footer.php'; ?>

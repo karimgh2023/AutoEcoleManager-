@@ -35,12 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($idm_new <= 0 || $ida_new <= 0 || $date_new === '' || $heure === '' || $nbheures <= 0) {
         $error = "Tous les champs sont obligatoires.";
     } else {
-        $stmt = $idcon->prepare("UPDATE Seance SET IdM = ?, IdA = ?, DateS = ?, HeureS = ?, NbHeures = ? WHERE IdM = ? AND IdA = ? AND DateS = ?");
-        $stmt->execute([$idm_new, $ida_new, $date_new, $heure, $nbheures, $idm, $ida, $date]);
-        header("Location: /admin/manage_seances.php");
-        exit();
+        try {
+            $stmt = $idcon->prepare("UPDATE Seance SET IdM = ?, IdA = ?, DateS = ?, HeureS = ?, NbHeures = ? WHERE IdM = ? AND IdA = ? AND DateS = ?");
+            $stmt->execute([$idm_new, $ida_new, $date_new, $heure, $nbheures, $idm, $ida, $date]);
+            set_flash('success', "Seance mise a jour avec succes.");
+            header("Location: /admin/manage_seances.php");
+            exit();
+        } catch (PDOException $e) {
+            $error = "Impossible de mettre a jour la seance.";
+        }
     }
 }
+
+$seanceFormData = [
+    'idm' => (string) ($_POST['idm'] ?? $seance['IdM']),
+    'ida' => (string) ($_POST['ida'] ?? $seance['IdA']),
+    'date' => (string) ($_POST['date'] ?? $seance['DateS']),
+    'heure' => (string) ($_POST['heure'] ?? $seance['HeureS']),
+    'nbheures' => (int) ($_POST['nbheures'] ?? $seance['NbHeures']),
+];
+$submitLabel = 'Mettre a jour';
 
 $activePage = 'seances';
 $pageTitle = 'Modifier une seance';
@@ -49,16 +63,6 @@ require_once __DIR__ . '/../../includes/admin_header.php';
 <section class="card">
     <h2>Edition seance</h2>
     <?php if ($error): ?><div class="error"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
-    <form method="post" class="grid">
-        <div><label for="idm">Moniteur</label><select id="idm" name="idm" required><?php foreach ($moniteurs as $m): ?><option value="<?php echo $m['IdM']; ?>" <?php if ((int) $m['IdM'] === (int) $seance['IdM']) echo 'selected'; ?>><?php echo htmlspecialchars($m['NomM'] . ' ' . $m['PrenomM']); ?></option><?php endforeach; ?></select></div>
-        <div><label for="ida">Adherent</label><select id="ida" name="ida" required><?php foreach ($adherents as $a): ?><option value="<?php echo $a['IdA']; ?>" <?php if ((int) $a['IdA'] === (int) $seance['IdA']) echo 'selected'; ?>><?php echo htmlspecialchars($a['NomA'] . ' ' . $a['PrenomA']); ?></option><?php endforeach; ?></select></div>
-        <div><label for="date">Date</label><input type="date" id="date" name="date" value="<?php echo htmlspecialchars($seance['DateS']); ?>" required></div>
-        <div><label for="heure">Heure</label><input type="time" id="heure" name="heure" value="<?php echo htmlspecialchars($seance['HeureS']); ?>" required></div>
-        <div><label for="nbheures">Nombre d'heures</label><input type="number" id="nbheures" name="nbheures" min="1" value="<?php echo (int) $seance['NbHeures']; ?>" required></div>
-        <div class="inline-actions">
-            <input type="submit" value="Mettre a jour">
-            <a href="/admin/manage_seances.php">Retour</a>
-        </div>
-    </form>
+    <?php require __DIR__ . '/partials/seance_form.php'; ?>
 </section>
 <?php require_once __DIR__ . '/../../includes/admin_footer.php'; ?>

@@ -10,12 +10,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($nom === '' || $prenom === '' || $ville === '') {
         $error = "Tous les champs sont obligatoires.";
     } else {
-        $stmt = $idcon->prepare("INSERT INTO Adherent (NomA, PrenomA, Ville) VALUES (?, ?, ?)");
-        $stmt->execute([$nom, $prenom, $ville]);
-        header("Location: /admin/manage_adherents.php");
-        exit();
+        try {
+            $stmt = $idcon->prepare("INSERT INTO Adherent (NomA, PrenomA, Ville) VALUES (?, ?, ?)");
+            $stmt->execute([$nom, $prenom, $ville]);
+            set_flash('success', "Adherent cree avec succes.");
+            header("Location: /admin/manage_adherents.php");
+            exit();
+        } catch (PDOException $e) {
+            $error = "Impossible de creer l'adherent.";
+        }
     }
 }
+
+$adherentFormData = [
+    'nom' => (string) ($_POST['nom'] ?? ''),
+    'prenom' => (string) ($_POST['prenom'] ?? ''),
+    'ville' => (string) ($_POST['ville'] ?? ''),
+];
+$submitLabel = 'Ajouter';
 
 $activePage = 'adherents';
 $pageTitle = 'Ajouter un adherent';
@@ -24,14 +36,6 @@ require_once __DIR__ . '/../../includes/admin_header.php';
 <section class="card">
     <h2>Nouvel adherent</h2>
     <?php if ($error): ?><div class="error"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
-    <form method="post" class="grid">
-        <div><label for="nom">Nom</label><input type="text" id="nom" name="nom" required></div>
-        <div><label for="prenom">Prenom</label><input type="text" id="prenom" name="prenom" required></div>
-        <div><label for="ville">Ville</label><input type="text" id="ville" name="ville" required></div>
-        <div class="inline-actions">
-            <input type="submit" value="Ajouter">
-            <a href="/admin/manage_adherents.php">Retour</a>
-        </div>
-    </form>
+    <?php require __DIR__ . '/partials/adherent_form.php'; ?>
 </section>
 <?php require_once __DIR__ . '/../../includes/admin_footer.php'; ?>

@@ -1,6 +1,7 @@
 <?php
 $pageTitle = $pageTitle ?? "Administration";
 $activePage = $activePage ?? "";
+$flash = function_exists('get_flash') ? get_flash() : null;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -31,3 +32,8 @@ $activePage = $activePage ?? "";
                     <p class="subtitle">Bonjour, <?php echo htmlspecialchars($_SESSION['username']); ?>.</p>
                 </div>
             </header>
+            <?php if ($flash): ?>
+                <div class="<?php echo $flash['type'] === 'success' ? 'success' : 'error'; ?>">
+                    <?php echo htmlspecialchars((string) ($flash['message'] ?? '')); ?>
+                </div>
+            <?php endif; ?>

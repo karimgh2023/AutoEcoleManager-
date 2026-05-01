@@ -23,12 +23,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($nom === '' || $prenom === '' || $ville === '') {
         $error = "Tous les champs sont obligatoires.";
     } else {
-        $stmt = $idcon->prepare("UPDATE Adherent SET NomA = ?, PrenomA = ?, Ville = ? WHERE IdA = ?");
-        $stmt->execute([$nom, $prenom, $ville, $id]);
-        header("Location: /admin/manage_adherents.php");
-        exit();
+        try {
+            $stmt = $idcon->prepare("UPDATE Adherent SET NomA = ?, PrenomA = ?, Ville = ? WHERE IdA = ?");
+            $stmt->execute([$nom, $prenom, $ville, $id]);
+            set_flash('success', "Adherent mis a jour avec succes.");
+            header("Location: /admin/manage_adherents.php");
+            exit();
+        } catch (PDOException $e) {
+            $error = "Impossible de mettre a jour l'adherent.";
+        }
     }
 }
+
+$adherentFormData = [
+    'nom' => (string) ($_POST['nom'] ?? $adherent['NomA']),
+    'prenom' => (string) ($_POST['prenom'] ?? $adherent['PrenomA']),
+    'ville' => (string) ($_POST['ville'] ?? $adherent['Ville']),
+];
+$submitLabel = 'Mettre a jour';
 
 $activePage = 'adherents';
 $pageTitle = 'Modifier un adherent';
@@ -37,14 +49,6 @@ require_once __DIR__ . '/../../includes/admin_header.php';
 <section class="card">
     <h2>Edition adherent</h2>
     <?php if ($error): ?><div class="error"><?php echo htmlspecialchars($error); ?></div><?php endif; ?>
-    <form method="post" class="grid">
-        <div><label for="nom">Nom</label><input type="text" id="nom" name="nom" value="<?php echo htmlspecialchars($adherent['NomA']); ?>" required></div>
-        <div><label for="prenom">Prenom</label><input type="text" id="prenom" name="prenom" value="<?php echo htmlspecialchars($adherent['PrenomA']); ?>" required></div>
-        <div><label for="ville">Ville</label><input type="text" id="ville" name="ville" value="<?php echo htmlspecialchars($adherent['Ville']); ?>" required></div>
-        <div class="inline-actions">
-            <input type="submit" value="Mettre a jour">
-            <a href="/admin/manage_adherents.php">Retour</a>
-        </div>
-    </form>
+    <?php require __DIR__ . '/partials/adherent_form.php'; ?>
 </section>
 <?php require_once __DIR__ . '/../../includes/admin_footer.php'; ?>
